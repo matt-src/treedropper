@@ -16,18 +16,16 @@ import java.util.concurrent.Callable;
 
 @Script.Manifest(name="Tree Dropchopper", description="drops n chops the highest lvl trees available")
 public class WillowDropper extends PollingScript<ClientContext> implements PaintListener {
-    private List<Task> taskList = new ArrayList<Task>();
-    long start;
-    long abStart;
-    long abWait;
-    long abElapsed = 0;
-    int wcLvl = 0;
-    long lastXp = 0;
-    long lastXpTime = 0;
-    long lastXpTimeElapsed = 0;
+    private List<Task> taskList = new ArrayList<>();
+    private long start, abStart, abWait;
+    private long abElapsed = 0;
+    private long lastXp = 0;
+    private long lastXpTime = 0;
+    private long lastXpTimeElapsed = 0;
+    private int wcLvl = 0;
 
-    guiform gui;
-    String treeName = "";
+    private guiform gui;
+    private String treeName = "";
 
     @Override
     public void start() {
@@ -41,11 +39,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         }
         gui = new guiform();
         gui.setVisible(true);
-        Condition.wait(new Callable<Boolean>() {
-            public Boolean call() throws Exception {
-                return gui.getStarted();
-            }
-        });
+        Condition.wait(() -> gui.getStarted());
         gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         start = System.currentTimeMillis();
         abStart = start;
@@ -101,8 +95,8 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
 
     }
 
-    public void doAntiban(){
-        int decision = Random.nextGaussian(0, 5, 1, 50);
+    private void doAntiban() {
+        int decision = Random.nextGaussian(0, 6, 1, 50);
         decision = Math.round(decision);
         System.out.println("Decision is: " + decision);
         switch(decision){
@@ -121,6 +115,9 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
             case 4:
                 ctx.game.tab(Game.Tab.STATS);
                 break;
+            case 5:
+                ctx.game.tab(Game.Tab.FRIENDS_LIST);
+                break;
         }
 
     }
@@ -131,7 +128,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         ctx.input.move(new Point(x, y));
     }
 
-    public void moveMouseOffscreenRandom(){
+    private void moveMouseOffscreenRandom() {
         System.out.println("moving mouse off screen random");
         int direction = Random.nextGaussian(0, 4, 1, 50);
         int x, y;
