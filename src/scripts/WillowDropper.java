@@ -5,6 +5,7 @@ import java.awt.*;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
+import org.powerbot.script.rt4.Game;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
@@ -101,7 +102,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     }
 
     public void doAntiban(){
-        int decision = Random.nextGaussian(0, 4, 1, 50);
+        int decision = Random.nextGaussian(0, 5, 1, 50);
         decision = Math.round(decision);
         System.out.println("Decision is: " + decision);
         switch(decision){
@@ -117,6 +118,9 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
             case 3:
                 ctx.camera.angle(Random.nextInt(0, 300));
                 break;
+            case 4:
+                ctx.game.tab(Game.Tab.STATS);
+                break;
         }
 
     }
@@ -128,21 +132,40 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     }
 
     public void moveMouseOffscreenRandom(){
+        System.out.println("moving mouse off screen random");
         int direction = Random.nextGaussian(0, 4, 1, 50);
+        int x, y;
+        x = y = 0;
         switch(direction){
             case 0:
                 //move up
                 System.out.println("Moving up");
-                int x = Random.nextInt(0, ctx.game.dimensions().width - 1);
-                ctx.input.move(new Point(x, -10));
+                x = Random.nextInt(0, ctx.game.dimensions().width - 1);
+                y = -10;
                 break;
             case 1:
                 //move left
                 System.out.println("Moving left");
-                int y = Random.nextInt(0, ctx.game.dimensions().height - 1);
-                ctx.input.move(new Point(-10, y));
+                x = -10;
+                y = Random.nextInt(0, ctx.game.dimensions().height - 1);
                 break;
+
+                case 2:
+                //move right
+                System.out.println("Moving right");
+                x = ctx.game.dimensions().width + 10;
+                y = Random.nextInt(0, ctx.game.dimensions().height - 1);
+                break;
+            case 3:
+                //move down
+                System.out.println("Moving down");
+                x = Random.nextInt(0, ctx.game.dimensions().width - 1);
+                y = Random.nextInt(0, ctx.game.dimensions().height + 10);
+                break;
+
         }
+        ctx.input.move(new Point(x, y));
+
     }
 }
 
