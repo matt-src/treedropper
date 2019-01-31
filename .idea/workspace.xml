@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4141864-8de6-4932-93bb-f8470fa9fdcd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/scripts/WillowDropper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/WillowDropper.java" afterDir="false" />
-    </list>
+    <list default="true" id="a4141864-8de6-4932-93bb-f8470fa9fdcd" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
