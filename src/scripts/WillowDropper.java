@@ -7,17 +7,15 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Game;
 
-import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Script.Manifest(name="Tree Dropchopper", description="drops n chops the highest lvl trees available")
 public class WillowDropper extends PollingScript<ClientContext> implements PaintListener {
     private List<Task> taskList = new ArrayList<>();
-    private long start, abStart, abWait;
+    private long startTime, abStart, abWait;
     private long abElapsed = 0;
     private long startXp = 0;
     //private long lastXpTime = 0;
@@ -38,32 +36,22 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         } else if (wcLvl < 60) {
             treeName = "Willow";
         }
-        gui = new guiform();
+        /*gui = new guiform();
         gui.setVisible(true);
         Condition.wait(() -> gui.getStarted());
-        gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
-        start = System.currentTimeMillis();
-        abStart = start;
-        lastInputTime = start;
+        gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));*/
+        startTime = System.currentTimeMillis();
+        abStart = startTime;
+        lastInputTime = startTime;
         abWait = Random.nextGaussian(5, 280, 60, 100);
         taskList.addAll(Arrays.asList(new Chop(ctx, treeName), new Drop(ctx)));
     }
 
     @Override
     public void poll() {
-        /*if(ctx.skills.experience(Constants.SKILLS_WOODCUTTING) > lastXp){
-            lastXp = ctx.skills.experience(Constants.SKILLS_WOODCUTTING);
-            lastXpTime = System.currentTimeMillis();
-        }*/
         lastInputTimeElapsed = (System.currentTimeMillis() - lastInputTime) / 1000;
-        if (lastInputTimeElapsed > 250) {
-                System.out.println("anti logout movement");
-            ctx.camera.angle(Random.nextInt(0, 300)); //We've been cutting for a long time without input, move camera to prevent auto logout
-            lastInputTime = System.currentTimeMillis();
-        }
-        /*
-        Handle antiban
-         */
+        antiLogout(); //Makes sure we don't get logged out for inactivity if we end up chopping the same tree for a long time
+        //Handle antiban
         long elapsed = (System.currentTimeMillis() - abStart) / 1000;
         abElapsed = elapsed;
         if(elapsed > abWait){
@@ -79,28 +67,14 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         }
     }
 
-    @Override
-    public void repaint(Graphics graphics){
-        Graphics2D g = (Graphics2D) graphics;
-        long elapsed = System.currentTimeMillis() - start;
-        String elapsedString = formatTime(elapsed);
-        String abWaitString = Long.toString(abWait);
-        String treeName = tofuFuncs.Tools.getTreeName(ctx);
-        wcLvl = ctx.skills.level(Constants.SKILLS_WOODCUTTING);
-        g.drawString("Time Running: " + elapsedString, 50, 75);
-        g.drawString("XP per hour: " + xpHr(), 50, 100);
-        g.drawString("Time Elapsed Since Last Antiban: " + abElapsed, 50, 125);
-        g.drawString("Next antiban at: " +  abWaitString + " elapsed", 50, 150);
-        g.drawString("Current level: " +  wcLvl, 50, 175);
-        g.drawString("Target tree: " +  treeName, 50, 200);
-        g.drawString("Time Elapsed Since Last Input: " + lastInputTimeElapsed, 50, 225);
-    }
-
-    private long xpHr() {
-        long xpGained = ctx.skills.experience(Constants.SKILLS_WOODCUTTING) - startXp;
-        long elapsed = (System.currentTimeMillis() - start) / 1000;
-        double hoursElapsed = (float) elapsed / 3600;
-        return Math.round((1 / hoursElapsed) * xpGained);
+    private void antiLogout() { //Makes sure we don't get logged out for inactivity if we end up chopping the same tree for a long time
+        if (lastInputTimeElapsed > 250) {
+            System.out.println("anti logout movement");
+            if (ctx.game.tab(Game.Tab.INVENTORY)) { //Switch to inventory tab if we're not already on it, to prevent auto logout
+                ctx.camera.angle(Random.nextInt(0, 300)); //We're already on inventory tab, we'll move camera instead to prevent auto logout
+            }
+            lastInputTime = System.currentTimeMillis();
+        }
     }
 
     private void doAntiban() {
@@ -133,12 +107,12 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
 
     }
 
-    private void peeBreak() {
+    private void peeBreak() { //Take a break to simulate going AFK or getting distracted
         System.out.println("Taking a wiz");
         Condition.sleep(Random.nextGaussian(20000, 60000, 45000, 100)); //Simulate a break/distraction (TODO: check for anti logout timer while breaking or have auto relog if possible)
     }
 
-    private String formatTime(long _elapsed) {
+    private String formatTime(long _elapsed) { //Format time to an hours, minutes, seconds string
         long elapsed = _elapsed / 1000;
         String elapsedSeconds = Long.toString(elapsed % 60);
         String elapsedMinutes = Long.toString((elapsed / 60) % 60);
@@ -188,5 +162,24 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         ctx.input.move(new Point(x, y));
 
     }
+
+    @Override
+    public void repaint(Graphics graphics) {
+        Graphics2D g = (Graphics2D) graphics;
+        long elapsed = System.currentTimeMillis() - startTime;
+        String elapsedString = formatTime(elapsed);
+        String abWaitString = Long.toString(abWait);
+        String treeName = tofuFuncs.Tools.getTreeName(ctx);
+        long xphr = tofuFuncs.Tools.xpHr(ctx, startXp, startTime);
+        wcLvl = ctx.skills.level(Constants.SKILLS_WOODCUTTING);
+        g.drawString("Time Running: " + elapsedString, 50, 75);
+        g.drawString("XP per hour: " + xphr, 50, 100);
+        g.drawString("Time Elapsed Since Last Antiban: " + abElapsed, 50, 125);
+        g.drawString("Next antiban at: " + abWaitString + " elapsed", 50, 150);
+        g.drawString("Current level: " + wcLvl, 50, 175);
+        g.drawString("Target tree: " + treeName, 50, 200);
+        g.drawString("Time Elapsed Since Last Input: " + lastInputTimeElapsed, 50, 225);
+    }
+
 }
 

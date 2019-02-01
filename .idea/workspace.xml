@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4141864-8de6-4932-93bb-f8470fa9fdcd" name="Default Changelist" comment="">
+    <list default="true" id="a4141864-8de6-4932-93bb-f8470fa9fdcd" name="Default Changelist" comment="remove GUI, move xpHr() function from WillowDropper class to tofuFuncs class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scripts/WillowDropper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/WillowDropper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/tofuFuncs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/tofuFuncs.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scripts/WillowDropper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="512">
-              <caret line="146" column="5" lean-forward="true" selection-start-line="146" selection-start-column="5" selection-end-line="146" selection-end-column="5" />
+            <state relative-caret-position="532">
+              <caret line="41" column="78" selection-start-line="41" selection-start-column="78" selection-end-line="41" selection-end-column="78" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -29,11 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/scripts/tofuFuncs.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+            <state relative-caret-position="119">
+              <caret line="7" column="17" lean-forward="true" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -125,10 +126,10 @@
         <option value="$PROJECT_DIR$/src/scripts/guiform.form" />
         <option value="$PROJECT_DIR$/src/scripts/guiform.java" />
         <option value="$PROJECT_DIR$/src/scripts/HelloWorld.java" />
-        <option value="$PROJECT_DIR$/src/scripts/tofuFuncs.java" />
         <option value="$PROJECT_DIR$/src/scripts/Chop.java" />
         <option value="$PROJECT_DIR$/src/scripts/Drop.java" />
         <option value="$PROJECT_DIR$/src/scripts/WillowDropper.java" />
+        <option value="$PROJECT_DIR$/src/scripts/tofuFuncs.java" />
       </list>
     </option>
   </component>
@@ -170,7 +171,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549022630078" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549023885118" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../npclover" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
@@ -248,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1549020131488</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix broken runtime calculation, add xp/hr">
+      <created>1549022903151</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1549022903151</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -264,15 +272,15 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3290461" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49733475" visible="true" weight="0.21757771" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49733475" weight="0.21757771" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39958593" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49946696" weight="0.3290461" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5026652" side_tool="true" visible="true" weight="0.21757771" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5021322" side_tool="true" visible="true" weight="0.3129689" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3290461" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49840087" weight="0.3129689" />
+      <window_info active="true" anchor="bottom" id="Messages" order="10" sideWeight="0.4978678" visible="true" weight="0.3129689" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.18869936" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -318,7 +326,9 @@
     <MESSAGE value="fix anti idle logout, improve paint, minor antiban changes" />
     <MESSAGE value="move time formatting to separate function" />
     <MESSAGE value="replace friends tab check antiban action with pee break" />
-    <option name="LAST_COMMIT_MESSAGE" value="replace friends tab check antiban action with pee break" />
+    <MESSAGE value="fix broken runtime calculation, add xp/hr" />
+    <MESSAGE value="remove GUI, move xpHr() function from WillowDropper class to tofuFuncs class" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove GUI, move xpHr() function from WillowDropper class to tofuFuncs class" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -411,16 +421,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/tofuFuncs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/Chop.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -433,8 +433,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scripts/WillowDropper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="146" column="5" lean-forward="true" selection-start-line="146" selection-start-column="5" selection-end-line="146" selection-end-column="5" />
+        <state relative-caret-position="532">
+          <caret line="41" column="78" selection-start-line="41" selection-start-column="78" selection-end-line="41" selection-end-column="78" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/tofuFuncs.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="17" lean-forward="true" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
