@@ -19,7 +19,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     private List<Task> taskList = new ArrayList<>();
     private long start, abStart, abWait;
     private long abElapsed = 0;
-    //private long lastXp = 0;
+    private long startXp = 0;
     //private long lastXpTime = 0;
     private long lastInputTime = 0;
     private long lastInputTimeElapsed = 0;
@@ -30,7 +30,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
 
     @Override
     public void start() {
-        //lastXp = ctx.skills.experience(Constants.SKILLS_WOODCUTTING);
+        startXp = ctx.skills.experience(Constants.SKILLS_WOODCUTTING);
         if(wcLvl < 15){
             treeName = "Tree";
         } else if(wcLvl < 30){
@@ -87,12 +87,20 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         String abWaitString = Long.toString(abWait);
         String treeName = tofuFuncs.Tools.getTreeName(ctx);
         wcLvl = ctx.skills.level(Constants.SKILLS_WOODCUTTING);
-        g.drawString("Time Running: " + elapsedString, 50, 100);
+        g.drawString("Time Running: " + elapsedString, 50, 75);
+        g.drawString("XP per hour: " + xpHr(), 50, 100);
         g.drawString("Time Elapsed Since Last Antiban: " + abElapsed, 50, 125);
         g.drawString("Next antiban at: " +  abWaitString + " elapsed", 50, 150);
         g.drawString("Current level: " +  wcLvl, 50, 175);
         g.drawString("Target tree: " +  treeName, 50, 200);
         g.drawString("Time Elapsed Since Last Input: " + lastInputTimeElapsed, 50, 225);
+    }
+
+    private long xpHr() {
+        long xpGained = ctx.skills.experience(Constants.SKILLS_WOODCUTTING) - startXp;
+        long elapsed = (System.currentTimeMillis() - start) / 1000;
+        double hoursElapsed = (float) elapsed / 3600;
+        return Math.round((1 / hoursElapsed) * xpGained);
     }
 
     private void doAntiban() {
@@ -133,8 +141,8 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     private String formatTime(long _elapsed) {
         long elapsed = _elapsed / 1000;
         String elapsedSeconds = Long.toString(elapsed % 60);
-        String elapsedMinutes = Long.toString((elapsed % 3600) / 60);
-        String elapsedHours = Long.toString(((elapsed % 3600) / 60) / 24);
+        String elapsedMinutes = Long.toString((elapsed / 60) % 60);
+        String elapsedHours = Long.toString((elapsed / 3600) % 24);
         return elapsedHours + ":" + elapsedMinutes + ":" + elapsedSeconds;
     }
 
