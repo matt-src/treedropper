@@ -19,9 +19,10 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     private List<Task> taskList = new ArrayList<>();
     private long start, abStart, abWait;
     private long abElapsed = 0;
-    private long lastXp = 0;
-    private long lastXpTime = 0;
-    private long lastXpTimeElapsed = 0;
+    //private long lastXp = 0;
+    //private long lastXpTime = 0;
+    private long lastInputTime = 0;
+    private long lastInputTimeElapsed = 0;
     private int wcLvl = 0;
 
     private guiform gui;
@@ -29,7 +30,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
 
     @Override
     public void start() {
-        lastXp = ctx.skills.experience(Constants.SKILLS_WOODCUTTING);
+        //lastXp = ctx.skills.experience(Constants.SKILLS_WOODCUTTING);
         if(wcLvl < 15){
             treeName = "Tree";
         } else if(wcLvl < 30){
@@ -43,23 +44,22 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         start = System.currentTimeMillis();
         abStart = start;
-        lastXpTime = start;
+        lastInputTime = start;
         abWait = Random.nextGaussian(5, 280, 60, 100);
         taskList.addAll(Arrays.asList(new Chop(ctx, treeName), new Drop(ctx)));
     }
 
     @Override
     public void poll() {
-        if(ctx.skills.experience(Constants.SKILLS_WOODCUTTING) > lastXp){
+        /*if(ctx.skills.experience(Constants.SKILLS_WOODCUTTING) > lastXp){
             lastXp = ctx.skills.experience(Constants.SKILLS_WOODCUTTING);
             lastXpTime = System.currentTimeMillis();
-        }
-        lastXpTimeElapsed = (System.currentTimeMillis() - lastXpTime)/1000;
-        if(lastXpTimeElapsed > 250){
-            if(ctx.players.local().animation() > -1) {
+        }*/
+        lastInputTimeElapsed = (System.currentTimeMillis() - lastInputTime) / 1000;
+        if (lastInputTimeElapsed > 250) {
                 System.out.println("anti logout movement");
-                ctx.camera.angle(Random.nextInt(0, 300)); //We've been cutting for a long time without XP, move camera to prevent auto logout
-            }
+            ctx.camera.angle(Random.nextInt(0, 300)); //We've been cutting for a long time without input, move camera to prevent auto logout
+            lastInputTime = System.currentTimeMillis();
         }
         /*
         Handle antiban
@@ -74,6 +74,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         for(Task task : taskList) {
             if(task.activate()) {
                 task.execute();
+                lastInputTime = System.currentTimeMillis();
             }
         }
     }
@@ -83,16 +84,19 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         Graphics2D g = (Graphics2D) graphics;
         long elapsed = System.currentTimeMillis() - start;
         elapsed = elapsed / 1000;
-        String elapsedString = Long.toString(elapsed);
+        String elapsedSeconds = Long.toString(elapsed % 60);
+        String elapsedMinutes = Long.toString((elapsed % 3600) / 60);
+        String elapsedHours = Long.toString(((elapsed % 3600) / 60) / 24);
+        String elapsedString = elapsedHours + ":" + elapsedMinutes + ":" + elapsedSeconds;
         String abWaitString = Long.toString(abWait);
         String treeName = tofuFuncs.Tools.getTreeName(ctx);
         wcLvl = ctx.skills.level(Constants.SKILLS_WOODCUTTING);
-        g.drawString("Time Running: " + elapsedString + " seconds", 50, 100);
+        g.drawString("Time Running: " + elapsedString, 50, 100);
         g.drawString("Time Elapsed Since Last Antiban: " + abElapsed, 50, 125);
         g.drawString("Next antiban at: " +  abWaitString + " elapsed", 50, 150);
         g.drawString("Current level: " +  wcLvl, 50, 175);
         g.drawString("Target tree: " +  treeName, 50, 200);
-
+        g.drawString("Time Elapsed Since Last Input: " + lastInputTimeElapsed, 50, 225);
     }
 
     private void doAntiban() {
@@ -101,16 +105,19 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         System.out.println("Decision is: " + decision);
         switch(decision){
             case 0:
+                moveMouseRandom();
             case 1:
                 moveMouseOffscreenRandom();
                 break;
             case 2:
                 if(!ctx.objects.select().name(treeName).isEmpty()){
                     ctx.camera.turnTo(ctx.objects.nearest().poll());
+                    lastInputTime = System.currentTimeMillis();
                 }
                 break;
             case 3:
                 ctx.camera.angle(Random.nextInt(0, 300));
+                lastInputTime = System.currentTimeMillis();
                 break;
             case 4:
                 ctx.game.tab(Game.Tab.STATS);
@@ -122,7 +129,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
 
     }
 
-    public void moveMouseRandom(){
+    private void moveMouseRandom() {
         int x = Random.nextInt(0, ctx.game.dimensions().width - 1);
         int y = Random.nextInt(0, ctx.game.dimensions().height - 1);
         ctx.input.move(new Point(x, y));
