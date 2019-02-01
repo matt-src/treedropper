@@ -83,11 +83,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     public void repaint(Graphics graphics){
         Graphics2D g = (Graphics2D) graphics;
         long elapsed = System.currentTimeMillis() - start;
-        elapsed = elapsed / 1000;
-        String elapsedSeconds = Long.toString(elapsed % 60);
-        String elapsedMinutes = Long.toString((elapsed % 3600) / 60);
-        String elapsedHours = Long.toString(((elapsed % 3600) / 60) / 24);
-        String elapsedString = elapsedHours + ":" + elapsedMinutes + ":" + elapsedSeconds;
+        String elapsedString = formatTime(elapsed);
         String abWaitString = Long.toString(abWait);
         String treeName = tofuFuncs.Tools.getTreeName(ctx);
         wcLvl = ctx.skills.level(Constants.SKILLS_WOODCUTTING);
@@ -123,10 +119,23 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
                 ctx.game.tab(Game.Tab.STATS);
                 break;
             case 5:
-                ctx.game.tab(Game.Tab.FRIENDS_LIST);
+                peeBreak();
                 break;
         }
 
+    }
+
+    private void peeBreak() {
+        System.out.println("Taking a wiz");
+        Condition.sleep(Random.nextGaussian(20000, 60000, 45000, 100)); //Simulate a break/distraction (TODO: check for anti logout timer while breaking or have auto relog if possible)
+    }
+
+    private String formatTime(long _elapsed) {
+        long elapsed = _elapsed / 1000;
+        String elapsedSeconds = Long.toString(elapsed % 60);
+        String elapsedMinutes = Long.toString((elapsed % 3600) / 60);
+        String elapsedHours = Long.toString(((elapsed % 3600) / 60) / 24);
+        return elapsedHours + ":" + elapsedMinutes + ":" + elapsedSeconds;
     }
 
     private void moveMouseRandom() {
