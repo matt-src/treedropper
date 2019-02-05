@@ -84,6 +84,7 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         switch(decision){
             case 0:
                 moveMouseRandom();
+                break;
             case 1:
                 moveMouseOffscreenRandom();
                 break;

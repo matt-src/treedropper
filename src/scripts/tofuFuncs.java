@@ -4,7 +4,6 @@ import org.powerbot.script.Client;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.ClientContext;
 
-
 class tofuFuncs {
     static class Tools {
 
@@ -24,7 +23,6 @@ class tofuFuncs {
             double hoursElapsed = (float) elapsed / 3600;
             return Math.round((1 / hoursElapsed) * xpGained);
         }
-
 
     }
 }
