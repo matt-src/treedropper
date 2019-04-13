@@ -7,10 +7,11 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Game;
 
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static scripts.tofuFuncs.Tools.*;
 
 @Script.Manifest(name="Tree Dropchopper", description="drops n chops the highest lvl trees available")
 public class WillowDropper extends PollingScript<ClientContext> implements PaintListener {
@@ -22,9 +23,9 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
     private long lastInputTime = 0;
     private long lastInputTimeElapsed = 0;
     private int wcLvl = 0;
-
     private guiform gui;
     private String treeName = "";
+    private boolean shiftDrop = true;
 
     @Override
     public void start() {
@@ -170,8 +171,8 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         long elapsed = System.currentTimeMillis() - startTime;
         String elapsedString = formatTime(elapsed);
         String abWaitString = Long.toString(abWait);
-        String treeName = tofuFuncs.Tools.getTreeName(ctx);
-        long xphr = tofuFuncs.Tools.xpHr(ctx, startXp, startTime);
+        String treeName = getTreeName(ctx);
+        long xphr = xpHr(ctx, startXp, startTime);
         wcLvl = ctx.skills.level(Constants.SKILLS_WOODCUTTING);
         g.drawString("Time Running: " + elapsedString, 50, 75);
         g.drawString("XP per hour: " + xphr, 50, 100);
@@ -179,7 +180,8 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
         g.drawString("Next antiban at: " + abWaitString + " elapsed", 50, 150);
         g.drawString("Current level: " + wcLvl, 50, 175);
         g.drawString("Target tree: " + treeName, 50, 200);
-        g.drawString("Time Elapsed Since Last Input: " + lastInputTimeElapsed, 50, 225);
+        g.drawString("Shift Drop? " + shiftDrop, 50, 225);
+        g.drawString("Time Elapsed Since Last Input: " + lastInputTimeElapsed, 50, 250);
     }
 
 }

@@ -26,7 +26,7 @@ public class Drop extends Task<ClientContext>{
     public void execute() {
         if (ctx.game.tab(Game.Tab.INVENTORY)) {
             ctx.inventory.select().name(logNames).each(item -> {
-                if (item.interact("Drop")) {
+                if (ctx.inventory.drop(item, true)) {
                     Condition.sleep(Random.nextGaussian(0, 1500, 100, 20));
                     return true;
                 } else {
