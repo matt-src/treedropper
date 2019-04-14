@@ -27,6 +27,10 @@ public class Chop extends Task<ClientContext> {
 
     @Override
     public void execute() {
+        //Selected item bug check
+        if (ctx.inventory.selectedItemIndex() != -1) {
+            ctx.movement.step(ctx.players.local().tile()); //Click something to deselect item
+        }
         GameObject tree = ctx.objects.nearest().poll();
         //if(tree.tile().matrix(ctx).reachable()) {
             if (tree.inViewport()) {
@@ -53,5 +57,8 @@ public class Chop extends Task<ClientContext> {
             }
         }
         return false;
+    }
+
+    private class Inventory {
     }
 }

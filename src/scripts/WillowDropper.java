@@ -103,14 +103,14 @@ public class WillowDropper extends PollingScript<ClientContext> implements Paint
                 ctx.game.tab(Game.Tab.STATS);
                 break;
             case 5:
-                peeBreak();
+                afkBreak();
                 break;
         }
 
     }
 
-    private void peeBreak() { //Take a break to simulate going AFK or getting distracted
-        System.out.println("Taking a wiz");
+    private void afkBreak() { //Take a break to simulate going AFK or getting distracted
+        System.out.println("Going afk for a bit");
         Condition.sleep(Random.nextGaussian(20000, 60000, 45000, 100)); //Simulate a break/distraction (TODO: check for anti logout timer while breaking or have auto relog if possible)
     }
 
