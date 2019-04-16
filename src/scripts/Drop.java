@@ -2,10 +2,8 @@ package scripts;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
-import org.powerbot.script.Filter;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Game;
-import org.powerbot.script.rt4.Item;
 
 public class Drop extends Task<ClientContext>{
 
